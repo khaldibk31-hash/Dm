@@ -346,7 +346,126 @@ function ProductDetailView({
               )}
             </div>
 
-            {/* ... (باقي خيارات المقاس والقبعة كما هي) ... */}
+            {(isAdminMode || !product.hideSizing) && (
+              <div className={`pt-3 border-t border-[#e6ddd3] space-y-3 ${product.hideSizing ? 'opacity-50' : ''}`}>
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-bold text-[#1f1917]">المقاس:</label>
+                  {isAdminMode && onToggleField && (
+                    <button type="button" onClick={() => onToggleField('hideSizing')} className={`px-2.5 py-1 rounded-full text-[11px] font-bold cursor-pointer ${product.hideSizing ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-700'}`}>
+                      {product.hideSizing ? '+ إظهار للزبائن' : '✕ حذف وإخفاء'}
+                    </button>
+                  )}
+                </div>
+                {!product.hideSizing && (
+                  <>
+                    <div className="grid grid-cols-2 gap-2 p-1 rounded-full bg-[#f3eee8]">
+                      {(['نسائي', 'رجالي'] as const).map((g) => (
+                        <button key={g} type="button" onClick={() => setGender(g)} className={`py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${gender === g ? 'bg-white text-[#762b43] shadow-sm' : 'text-[#6e645e]'}`}>
+                          {g}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="grid grid-cols-5 gap-1.5">
+                      {['XS', 'S', 'M', 'L', 'XL'].map((sz) => (
+                        <button key={sz} type="button" onClick={() => { setStandardSize(sz); setNumericSize(''); }} className={`py-2 rounded-xl border text-xs font-bold cursor-pointer ${!numericSize && standardSize === sz ? 'bg-[#762b43] text-white border-[#762b43]' : 'bg-[#faf8f5] text-[#1f1917] border-[#e6ddd3]'}`}>
+                          {sz}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2.5">
+                      <div>
+                        <label className="block text-[11px] font-bold text-[#6e645e] mb-1">أو رقم مقاسك (34 - 70):</label>
+                        <input type="number" min={34} max={70} value={numericSize} onChange={(e) => setNumericSize(e.target.value)} placeholder="44 - 70" className="w-full px-3 py-2 rounded-xl border border-[#e6ddd3] bg-[#faf8f5] text-xs" />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-bold text-[#6e645e] mb-1">الطول الكامل (80 - 200 سم):</label>
+                        <input type="number" min={80} max={200} value={fullLength} onChange={(e) => setFullLength(e.target.value)} placeholder="سم" className="w-full px-3 py-2 rounded-xl border border-[#e6ddd3] bg-[#faf8f5] text-xs" />
+                      </div>
+                    </div>
+
+                    <input type="text" value={shoulderAndSleeve} onChange={(e) => setShoulderAndSleeve(e.target.value)} placeholder="عرض الكتفين وطول الكم (اختياري)..." className="w-full px-3 py-2 rounded-xl border border-[#e6ddd3] bg-[#faf8f5] text-xs" />
+                  </>
+                )}
+              </div>
+            )}
+
+            {product.category !== 'accessories' && product.category !== 'cap' && (isAdminMode || !product.hideCapDetails) && (
+              <div className={`pt-3 border-t border-[#e6ddd3] space-y-3 ${product.hideCapDetails ? 'opacity-50' : ''}`}>
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-bold text-[#1f1917]">القبعة وتفاصيلها:</label>
+                  {isAdminMode && onToggleField && (
+                    <button type="button" onClick={() => onToggleField('hideCapDetails')} className={`px-2.5 py-1 rounded-full text-[11px] font-bold cursor-pointer ${product.hideCapDetails ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-700'}`}>
+                      {product.hideCapDetails ? '+ إظهار للزبائن' : '✕ حذف وإخفاء'}
+                    </button>
+                  )}
+                </div>
+
+                {!product.hideCapDetails && (
+                  <>
+                    <div className="grid grid-cols-3 items-stretch gap-2 min-w-0">
+                      {CAP_STYLES.map((cap) => {
+                        const active = selectedCapStyle.id === cap.id;
+                        const capImgSrc = customCapImages[cap.id] || cap.image;
+                        return (
+                          <button key={cap.id} type="button" onClick={() => setSelectedCapStyle(cap)} className={`min-w-0 w-full p-1.5 sm:p-2 rounded-2xl border text-center cursor-pointer flex flex-col items-center overflow-hidden transition-colors ${active ? 'border-[#762b43] ring-2 ring-[#762b43]/20 bg-[#faf8f5]' : 'border-[#e6ddd3] bg-white'}`}>
+                            <div className="w-full h-24 sm:h-28 rounded-xl overflow-hidden bg-[#f9eef2] flex items-center justify-center">
+                              <img src={capImgSrc} alt={cap.label} loading="lazy" className="block w-full h-full object-contain p-1.5" />
+                            </div>
+
+                            <div className="mt-2 w-full min-w-0 flex flex-col items-center">
+                              <span className="block w-full text-[10px] sm:text-[11px] font-extrabold text-[#1f1917] leading-tight text-center break-words">{cap.label}</span>
+                              <span className="text-[10px] sm:text-[11px] font-bold text-[#762b43] mt-0.5">{cap.priceText}</span>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {isAdminMode && (
+                      <div className="grid grid-cols-3 gap-1.5 pt-1">
+                        {CAP_STYLES.map((cap) => (
+                          <label key={cap.id + '-upload'} className="cursor-pointer flex items-center justify-center gap-1 py-1.5 px-1 rounded-lg bg-[#faf8f5] border border-[#e6ddd3] hover:border-[#762b43] text-[10px] font-bold text-[#1f1917] text-center">
+                            <ImagePlus className="w-3 h-3 text-[#762b43] shrink-0" />
+                            <span className="truncate">صورة {cap.label.replace('القبعة ', '').replace('قبعة ', '')}</span>
+                            <input type="file" accept="image/*" className="hidden" onChange={(e) => handleCapImageUpload(cap.id, e)} />
+                          </label>
+                        ))}
+                      </div>
+                    )}
+
+                    <label className="block text-xs font-bold text-[#1f1917] pt-1">لون القبعة:</label>
+                    <div className="grid grid-cols-2 gap-2 p-1 rounded-full bg-[#f3eee8]">
+                      <button type="button" onClick={() => setCapSameColor(true)} className={`py-2 rounded-full text-xs font-bold cursor-pointer ${capSameColor ? 'bg-white text-[#762b43] shadow-sm' : 'text-[#6e645e]'}`}>نفس لون الوشاح</button>
+                      <button type="button" onClick={() => setCapSameColor(false)} className={`py-2 rounded-full text-xs font-bold cursor-pointer ${!capSameColor ? 'bg-white text-[#762b43] shadow-sm' : 'text-[#6e645e]'}`}>لون آخر</button>
+                    </div>
+
+                    {!capSameColor && (
+                      <div className="flex flex-wrap items-center gap-2 p-2.5 rounded-xl bg-[#faf8f5] border border-[#e6ddd3]">
+                        {CAP_SWATCHES.map((sw) => (
+                          <button key={sw.name} type="button" title={sw.name} onClick={() => setCapCustomColor(sw)} className={`w-6 h-6 rounded-full border cursor-pointer ${capCustomColor.name === sw.name ? 'ring-2 ring-[#762b43] ring-offset-1 scale-110' : 'border-black/20'}`} style={{ backgroundColor: sw.hex }} />
+                        ))}
+                        <span className="text-[11px] font-bold text-[#762b43] mr-1">{capCustomColor.name}</span>
+                      </div>
+                    )}
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#1f1917] mb-1">محيط الرأس (اختياري، 45 - 70 سم):</label>
+                      <input type="number" min={45} max={70} value={headSize} onChange={(e) => setHeadSize(e.target.value)} placeholder="45 - 70 سم" className="w-full px-3 py-2 rounded-xl border border-[#e6ddd3] bg-[#faf8f5] text-xs" />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      {(['سطح القبعة', 'جبهة القبعة'] as const).map((pos) => (
+                        <button key={pos} type="button" onClick={() => setCapEmbroideryPos(pos)} className={`py-2 px-2.5 rounded-full border text-xs font-bold cursor-pointer ${capEmbroideryPos === pos ? 'bg-[#762b43] text-white border-[#762b43]' : 'bg-white text-[#1f1917] border-[#e6ddd3]'}`}>طرّز على {pos}</button>
+                      ))}
+                    </div>
+
+                    <input type="text" value={capNotes} onChange={(e) => setCapNotes(e.target.value)} placeholder="ملاحظات للقبعة (مثلاً: الاسم على الجبهة بخيط ذهبي)..." className="w-full px-3 py-2 rounded-xl border border-[#e6ddd3] bg-[#faf8f5] text-xs" />
+                  </>
+                )}
+              </div>
+            )}
 
             <div className="pt-3 border-t border-[#e6ddd3] space-y-2.5">
               <input type="text" value={customNotes} onChange={(e) => setCustomNotes(e.target.value)} placeholder="ملاحظات إضافية للوشاح أو التطريز (اختياري)..." className="w-full px-3 py-2.5 rounded-xl border border-[#e6ddd3] bg-[#faf8f5] text-xs" />
@@ -374,7 +493,6 @@ function SectionCard({ product, isAdminMode, onSelect, onEdit, onDelete, onRepla
   const hasValidImage = Boolean(product.imageUrl) && !imgError;
 
   return (
-    // 🟢 كارت المنتج باللون الأبيض مع ظل خفيف
     <article onClick={onSelect} className="group bg-white border border-[#e6ddd3] rounded-2xl overflow-hidden flex flex-col cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
       <div className="relative aspect-[4/3] w-full bg-[#f3eee8] overflow-hidden">
         {hasValidImage ? (
