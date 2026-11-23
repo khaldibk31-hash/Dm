@@ -526,7 +526,8 @@ export default function App() {
   }, [sectionOrder]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0A0A0A] text-[#F7F3EA] relative overflow-x-hidden">
+    // 🟢 هنا ردينا الخلفية فاتحة
+    <div className="min-h-screen flex flex-col bg-[#fcfbf9] text-[#1f1917] relative overflow-x-hidden">
       <Header
         brandName={storeState.copy.brandName}
         logoUrl={storeState.logoUrl}
@@ -548,13 +549,13 @@ export default function App() {
       />
 
       <main className="flex-1 relative">
-        {/* Subtle low-opacity luxury watermark background emblem behind main sections */}
+        {/* 🟢 اللوقو كخلفية (Watermark) شفافة */}
         <div
           className="pointer-events-none select-none fixed inset-0 z-0 flex items-center justify-center overflow-hidden"
           aria-hidden="true"
         >
           <div
-            className="w-full h-full opacity-[0.045] luxury-logo-gold"
+            className="w-full h-full opacity-[0.03]"
             style={{
               backgroundImage: `url("${BRAND_LOGO_PATH}")`,
               backgroundRepeat: 'repeat',
@@ -579,7 +580,7 @@ export default function App() {
               <div key={secId} className="relative section-reveal">
                 {isAdminMode && (
                   <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-3 flex items-center justify-between gap-2">
-                    <span className="text-xs font-bold text-[#D4AF37] bg-[#141414] px-3 py-1.5 rounded-full border border-[#D4AF37]/25">
+                    <span className="text-xs font-bold text-[#762b43] bg-white px-3 py-1.5 rounded-full border border-[#e6ddd3] shadow-sm">
                       قسم: {sectionTitle}
                     </span>
                     <div className="flex items-center gap-1.5">
@@ -587,7 +588,7 @@ export default function App() {
                         type="button"
                         disabled={index === 0}
                         onClick={() => moveSection(secId, -1)}
-                        className="px-3 py-1.5 rounded-full bg-[#141414] border border-[#D4AF37]/25 text-xs font-bold text-[#F7F3EA] disabled:opacity-40 cursor-pointer hover:border-[#D4AF37]"
+                        className="px-3 py-1.5 rounded-full bg-white border border-[#e6ddd3] text-xs font-bold text-[#1f1917] disabled:opacity-40 cursor-pointer hover:border-[#762b43] shadow-sm"
                       >
                         ↑ نقل للأعلى
                       </button>
@@ -595,7 +596,7 @@ export default function App() {
                         type="button"
                         disabled={index === sectionOrder.length - 1}
                         onClick={() => moveSection(secId, 1)}
-                        className="px-3 py-1.5 rounded-full bg-[#141414] border border-[#D4AF37]/25 text-xs font-bold text-[#F7F3EA] disabled:opacity-40 cursor-pointer hover:border-[#D4AF37]"
+                        className="px-3 py-1.5 rounded-full bg-white border border-[#e6ddd3] text-xs font-bold text-[#1f1917] disabled:opacity-40 cursor-pointer hover:border-[#762b43] shadow-sm"
                       >
                         ↓ نقل للأسفل
                       </button>
@@ -701,33 +702,33 @@ export default function App() {
         </div>
       </main>
 
-      <footer className="relative z-10 bg-[#0A0A0A] border-t border-[#D4AF37]/20 py-10 px-4 sm:px-6">
+      <footer className="relative z-10 bg-white border-t border-[#e6ddd3] py-10 px-4 sm:px-6 shadow-sm">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div>
-            <p className="font-editorial text-xl font-bold text-[#D4AF37]">
+            <p className="font-editorial text-xl font-bold text-[#1f1917]">
               {storeState.copy.brandName}
             </p>
-            <p className="text-xs sm:text-sm text-[#A89F91] mt-1 max-w-md">
+            <p className="text-xs sm:text-sm text-[#6e645e] mt-1 max-w-md">
               دار أزياء التخرج في الجزائر: شالات مطرزة باسمك وشعارك، روبات بمقاسك، وقبعات مخصصة مع التوصيل لجميع الولايات.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 text-xs text-[#A89F91]">
+          <div className="flex flex-wrap items-center gap-4 text-xs text-[#6e645e]">
             <a
               href={`https://wa.me/${WHATSAPP_NUMBER}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-bold text-[#D4AF37] hover:underline"
+              className="font-bold text-[#18734b] hover:underline"
             >
               تواصل عبر WhatsApp
             </a>
-            <span aria-hidden="true" className="text-[#D4AF37]/40">·</span>
+            <span aria-hidden="true" className="text-[#e6ddd3]">·</span>
             <span>© 2026 DG by Douaa الجزائر</span>
-            <span aria-hidden="true" className="text-[#D4AF37]/40">·</span>
+            <span aria-hidden="true" className="text-[#e6ddd3]">·</span>
             <button
               type="button"
               onClick={handleUnlockAdmin}
-              className="inline-flex items-center gap-1 text-[#A89F91] hover:text-[#D4AF37] transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1 text-[#6e645e] hover:text-[#762b43] transition-colors cursor-pointer"
               title="دخول الإدارة"
             >
               <Lock className="w-3.5 h-3.5" />
@@ -743,7 +744,7 @@ export default function App() {
         rel="noopener noreferrer"
         title="تواصل عبر WhatsApp"
         aria-label="تواصل مباشر عبر WhatsApp"
-        className="fixed bottom-5 left-5 z-30 w-12 h-12 rounded-full bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] shadow-xl flex items-center justify-center transition-transform hover:scale-105"
+        className="fixed bottom-5 left-5 z-30 w-12 h-12 rounded-full bg-[#18734b] hover:bg-[#135c3c] text-white shadow-xl flex items-center justify-center transition-transform hover:scale-105"
       >
         <MessageCircle className="w-5 h-5" />
       </a>
@@ -788,31 +789,31 @@ export default function App() {
       />
 
       {isAdminMode && (
-        <div className="fixed bottom-5 right-5 z-40 flex flex-col gap-2 bg-[#141414]/95 backdrop-blur-md border border-[#D4AF37]/35 rounded-2xl shadow-2xl p-3 max-w-[230px]">
-          <div className="text-[11px] font-bold text-[#D4AF37] text-center pb-1.5 border-b border-[#D4AF37]/20">
-            وضع الإدارة مفعّل
+        <div className="fixed bottom-5 right-5 z-40 flex flex-col gap-2 bg-white/95 backdrop-blur-md border border-[#e6ddd3] rounded-2xl shadow-2xl p-3 max-w-[230px]">
+          <div className="text-[11px] font-bold text-[#762b43] text-center pb-1.5 border-b border-[#e6ddd3]">
+            ✏️ وضع الإدارة مفعّل
           </div>
           <button
             type="button"
             onClick={() => setIsDashboardOpen(true)}
-            className="px-3 py-2 rounded-xl bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0A0A] text-xs font-bold transition-colors cursor-pointer"
+            className="px-3 py-2 rounded-xl bg-[#18734b] hover:bg-[#135c3c] text-white text-xs font-bold transition-colors cursor-pointer"
           >
-            الطلبات والأرباح
+            📊 الطلبات والأرباح
           </button>
           <button
             type="button"
             onClick={handlePublishToCloud}
             disabled={isSavingCloud}
-            className="px-3 py-2 rounded-xl bg-[#1E1C18] hover:bg-[#2A2620] border border-[#D4AF37]/30 text-[#F7F3EA] text-xs font-bold transition-colors disabled:opacity-50 cursor-pointer"
+            className="px-3 py-2 rounded-xl bg-[#762b43] hover:bg-[#581e31] text-white text-xs font-bold transition-colors disabled:opacity-50 cursor-pointer"
           >
-            {isSavingCloud ? 'جاري النشر...' : 'حفظ ونشر'}
+            {isSavingCloud ? 'جاري النشر...' : '💾 حفظ ونشر'}
           </button>
           <button
             type="button"
             onClick={handleAdminLogout}
-            className="px-3 py-1.5 rounded-xl bg-[#0A0A0A] hover:bg-[#1E1C18] text-[#A89F91] hover:text-[#F7F3EA] text-xs font-bold transition-colors cursor-pointer"
+            className="px-3 py-1.5 rounded-xl bg-[#faf8f5] hover:bg-[#f3eee8] text-[#1f1917] text-xs font-bold transition-colors cursor-pointer"
           >
-            خروج
+            🚪 خروج
           </button>
         </div>
       )}
